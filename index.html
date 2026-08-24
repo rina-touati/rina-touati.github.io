@@ -35,7 +35,7 @@
   a{color:inherit}
 
   /* ===== big organic thread — left, part of the page, paints purple on scroll ===== */
-  #thread{position:fixed;top:0;bottom:0;left:0;width:300px;pointer-events:none;z-index:40}
+  #thread{position:fixed;top:0;bottom:0;right:0;left:auto;width:300px;pointer-events:none;z-index:40}
   @media(max-width:900px){#thread{width:150px}}
   #thread svg{width:100%;height:100%;display:block}
   #thread .track{fill:none;stroke:rgba(16,16,18,.08);stroke-width:3}
@@ -324,7 +324,7 @@
     <path class="track" id="tpath" d="M60,-20 C150,80 20,150 90,260 C160,360 10,430 100,540 C180,640 30,700 90,810 C140,900 60,950 110,1020"/>
     <path class="flow" id="tflow" d="M60,-20 C150,80 20,150 90,260 C160,360 10,430 100,540 C180,640 30,700 90,810 C140,900 60,950 110,1020"/>
   </svg>
-  <div id="comet" style="position:fixed;left:0;top:0;will-change:transform">
+  <div id="comet" style="position:fixed;right:0;top:0;will-change:transform">
     <svg width="22" height="22" viewBox="0 0 22 22" style="overflow:visible"><circle class="comet" cx="11" cy="11" r="5"/></svg>
   </div>
 </div>
@@ -439,6 +439,16 @@
             </div>
             <div class="figure">$5M<small>in revenue</small></div>
           </a>
+          <a class="case wide" href="https://www.interactivecrypto.com/" target="_blank" rel="noopener">
+            <span class="glow"></span><span class="arrow">↗</span>
+            <div class="body">
+              <div class="top"><span class="role">Autonomous AI agents · 24/7</span><span class="st live">● Running</span></div>
+              <h3>An AI team that runs the site</h3>
+              <p>A crew of AI agents that keeps a full production site running around the clock — picking up work, shipping changes, and watching for issues, without a computer open or a hand on the keyboard.</p>
+            </div>
+            <div class="figure">24/7<small>no keyboard required</small></div>
+          </a>
+
           <a class="case" href="https://aliyah-crm.vercel.app/crm/aliyah" target="_blank" rel="noopener">
             <span class="glow"></span><span class="arrow">↗</span>
             <div class="top"><span class="role">Internal tool</span><span class="st live">● Live</span></div>
@@ -588,7 +598,7 @@
     <footer>
       <div class="wrap foot">
         <span>Rina Touati</span>
-        <span>© 2026 · Designed &amp; built from scratch</span>
+        <span>&copy; 2026 Rina Touati. All rights reserved.</span>
       </div>
     </footer>
   </div>
@@ -612,9 +622,10 @@
     tflow.style.strokeDashoffset=len*(1-p);
     const threadW = innerWidth<=900 ? 150 : 300;
     const pt=tpath.getPointAtLength(len*p);
-    const x=(pt.x/300)*threadW;
+    const xFromLeft=(pt.x/300)*threadW;
+    const xFromRight=threadW-xFromLeft;
     const y=(pt.y/1000)*innerHeight;
-    comet.style.transform=`translate(${x-11}px, ${y-11}px)`;
+    comet.style.transform=`translate(${-(xFromRight)+11}px, ${y-11}px)`;
   }
 
   function onScroll(){
