@@ -199,8 +199,15 @@
   /* visual stage on the right */
   .off-stage{position:sticky;top:100px;aspect-ratio:1/1;border-radius:28px;background:#0B0B0F;overflow:hidden;border:1px solid var(--line);display:grid;place-items:center}
   @media(max-width:860px){.off-stage{position:relative;top:0;aspect-ratio:16/11}}
-  .off-stage .scene{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transform:scale(.96);transition:opacity .6s var(--ease),transform .6s var(--ease);padding:40px;text-align:center}
-  .off-stage .scene.on{opacity:1;transform:scale(1)}
+  .off-stage .scene{position:absolute;inset:0;display:grid;place-items:center;opacity:0;visibility:hidden;pointer-events:none;transform:scale(.98);padding:40px;text-align:center}
+  .off-stage .scene.on{opacity:1;visibility:visible;pointer-events:auto;transform:scale(1)}
+  .off-item:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
+  .off-stage .scene.tutor-scene{padding:20px;z-index:1}
+  @media(max-width:860px){.off-stage:has(.tutor-scene.on){aspect-ratio:auto;min-height:clamp(350px,85vw,650px)}}
+  .tutor-scene figure{width:100%;margin:0}
+  .tutor-scene img{display:block;width:100%;height:auto;border-radius:12px}
+  .tutor-scene figcaption{color:#c5c3d6;font-size:12px;line-height:1.5;margin-top:14px}
+  .tutor-scene h3{text-shadow:none;font-family:"Instrument Serif";font-size:30px;color:white;font-weight:400;margin-bottom:18px}
   .off-stage .scene .big{font-family:"Instrument Serif";font-weight:400;font-size:clamp(60px,11vw,120px);line-height:1;color:#fff;letter-spacing:-.02em}
   .off-stage .scene .big em{font-style:italic;color:var(--accent-lt)}
   .off-stage .scene .cap{color:rgba(255,255,255,.55);font-size:15px;margin-top:18px;max-width:26ch}
@@ -454,6 +461,9 @@
             <div class="figure">24/7<small>no keyboard required</small></div>
           </a>
 
+          <div class="case wide">
+            <div class="body"><div class="top"><span class="role">Custom AI application</span><span class="st">Private project</span></div><h3>A personal AI tutor</h3><p>A Hebrew literature learning platform built for a school, combining voice and avatar lessons, guided practice, feedback and progress tracking.</p></div>
+          </div>
           <a class="case" href="https://aliyah-crm.vercel.app/crm/aliyah" target="_blank" rel="noopener">
             <span class="glow"></span><span class="arrow">↗</span>
             <div class="top"><span class="role">Internal tool</span><span class="st live">● Live</span></div>
@@ -498,7 +508,7 @@
         <div class="lead rv">
           <span class="idx">02</span>
           <h2>What I do</h2>
-          <span class="note">One skill, four shapes. All of it is putting AI to work on the jobs done by hand.</span>
+          <span class="note">AI built around your business — from everyday automation to custom applications.</span>
         </div>
         <div class="offers">
           <div class="off-list" id="offList">
@@ -522,6 +532,11 @@
               <div class="ohead"><span class="onum">04</span><h3>AI-native growth</h3></div>
               <div class="obody"><p>Ten years of paid acquisition across Meta, Google, TikTok and more — now with AI running the creative testing, analysis, and optimization loop.</p></div>
             </div>
+            <div class="off-item" data-i="4">
+              <span class="bar"></span>
+              <div class="ohead"><span class="onum">05</span><h3>Custom AI Applications</h3></div>
+              <div class="obody"><p>Tailored AI applications — from interactive tutors and assistants to tools built around your business.</p></div>
+            </div>
           </div>
 
           <div class="off-stage" id="offStage">
@@ -529,6 +544,7 @@
             <div class="scene" data-i="1"><div><div class="big"><em>0</em></div><div class="cap">Manual steps left in the loop once it's running.</div></div></div>
             <div class="scene" data-i="2"><div><div class="big">1:1</div><div class="cap">Built to your exact requirements — not an off-the-shelf tool.</div></div></div>
             <div class="scene" data-i="3"><div><div class="big">$5M<em>+</em></div><div class="cap">Revenue driven through paid acquisition, now AI-run.</div></div></div>
+            <div class="scene tutor-scene" data-i="4"><figure><h3>A personal AI tutor</h3><img src="assets/ai-tutor-demo.png" alt="Illustrative Hebrew AI tutoring interface with a video avatar, side-by-side chat and lesson controls" width="1586" height="992" loading="lazy"><figcaption>Illustrative demo · Fictional avatar and sample data.<br>Private school project · Voice, avatar, practice &amp; progress.</figcaption></figure></div>
           </div>
         </div>
       </div>
@@ -700,14 +716,19 @@
   const items=[...document.querySelectorAll('.off-item')];
   const scenes=[...document.querySelectorAll('.off-stage .scene')];
   function selectOffer(i){
-    items.forEach(el=>el.classList.toggle('active',+el.dataset.i===i));
-    scenes.forEach(el=>el.classList.toggle('on',+el.dataset.i===i));
+    items.forEach(el=>{const active=+el.dataset.i===i;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));});
+    scenes.forEach(el=>{const active=+el.dataset.i===i;el.classList.toggle('on',active);el.setAttribute('aria-hidden',String(!active));});
   }
   items.forEach(el=>{
     const i=+el.dataset.i;
+    el.setAttribute('role','button');el.tabIndex=0;
+    el.setAttribute('aria-label',el.querySelector('h3').textContent);
+    el.setAttribute('aria-controls','offStage');
+    el.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();selectOffer(i);}});
     el.addEventListener('mouseenter',()=>selectOffer(i));
     el.addEventListener('click',()=>selectOffer(i));
   });
+  selectOffer(0);
 </script>
 </body>
 </html>
