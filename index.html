@@ -30,12 +30,13 @@
     -webkit-font-smoothing:antialiased;overflow-x:hidden;
   }
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
-  main,footer{padding-left:0}
+  /* Keep the decorative scroll thread behind all readable content. */
+  main,footer{position:relative;z-index:1;padding-left:0}
   ::selection{background:var(--accent);color:#fff}
   a{color:inherit}
 
-  /* ===== big organic thread — left, part of the page, paints purple on scroll ===== */
-  #thread{position:fixed;top:0;bottom:0;right:0;left:auto;width:300px;pointer-events:none;z-index:40}
+  /* ===== background thread — right, paints purple on scroll ===== */
+  #thread{position:fixed;top:0;bottom:0;right:0;left:auto;width:300px;pointer-events:none;z-index:0}
   @media(max-width:900px){#thread{width:150px}}
   #thread svg{width:100%;height:100%;display:block}
   #thread .track{fill:none;stroke:rgba(16,16,18,.08);stroke-width:3}
